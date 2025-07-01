@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"go-learning-journey/week01-basic/todo_cli/todo"
+	"log"
 	"os"
 	"strings"
 )
@@ -15,9 +16,9 @@ func main() {
 	var todos []todo.Item
 	scanner := bufio.NewScanner(os.Stdin)
 
-	if true {
-		todos = LoadList()
-		fmt.Println("loading history...")
+	todos = LoadList()
+	if todos != nil {
+		fmt.Println("loading todos successfully!")
 	}
 	fmt.Println("📝 TODO CLI（input help to view command）")
 
@@ -33,7 +34,7 @@ func main() {
 
 		switch args[0] {
 		case "help":
-			fmt.Println("command list: add <task> | list | done <task no> | exit ")
+			fmt.Println("command list: add <task> | list | done <task no> | delete <task no> | exit ")
 		case "add":
 			if len(args) < 2 {
 				fmt.Println("Please enter task")
@@ -59,8 +60,8 @@ func main() {
 			todo.Delete(&todos, args[1])
 			SaveList(todos)
 		case "exit":
-			SaveList(todos)
 			fmt.Println("👋 good bye")
+			SaveList(todos)
 			return
 		default:
 			fmt.Println("unknown command")
@@ -70,14 +71,29 @@ func main() {
 
 func LoadList() []todo.Item {
 	var todos []todo.Item
-	file, _ := os.ReadFile(FileName)
-	json.Unmarshal(file, &todos)
-	// todo error handler
+	file, err := os.ReadFile(FileName)
+	if err != nil {
+		log.Println("history not found")
+		return nil
+	}
+	err = json.Unmarshal(file, &todos)
+	if err != nil {
+		log.Fatal("failed to load todos file")
+		return nil
+	}
 	return todos
 }
 
-func SaveList(todos []todo.Item) {
-	data, _ := json.Marshal(todos)
-	os.WriteFile(FileName, data, os.ModePerm)
-	// todo error handler
+func SaveList(todos []todo.Item) bool {
+	data, err := json.Marshal(todos)
+	if err != nil {
+		log.Fatal("failed to save todos file")
+		return false
+	}
+	err = os.WriteFile(FileName, data, os.ModePerm)
+	if err != nil {
+		log.Println("failed to save todos file")
+		return false
+	}
+	return true
 }

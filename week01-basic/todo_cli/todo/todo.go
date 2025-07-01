@@ -6,25 +6,25 @@ import (
 	"time"
 )
 
-// Item It`s one task on the todo list
+// Item It`s one task on the todos
 type Item struct {
-	Content    string `json:"content"`
-	Done       bool   `json:"done"`
-	CreateTime string `json:"create_time"`
-	UpdateTime string `json:"update_time"`
+	Content    string    `json:"content"`
+	Done       bool      `json:"done"`
+	CreateTime time.Time `json:"create_time"`
+	UpdateTime time.Time `json:"update_time"`
 }
 
-// New Create a new todo item
+// New Create a new task
 func New(content string) Item {
 	return Item{
 		Content:    content,
 		Done:       false,
-		CreateTime: time.Now().Format(time.DateOnly),
-		UpdateTime: time.Now().Format(time.DateOnly),
+		CreateTime: time.Now(),
+		UpdateTime: time.Now(),
 	}
 }
 
-// PrintAll Print all item from the todo list
+// PrintAll Print all task from the todos
 func PrintAll(todos []Item) {
 	if len(todos) == 0 {
 		fmt.Println("no todos")
@@ -38,11 +38,18 @@ func PrintAll(todos []Item) {
 			status = "✅"
 		}
 
-		fmt.Printf("%d. %s %s [%s] %s\n", i+1, todo.CreateTime, todo.UpdateTime, status, todo.Content)
+		fmt.Printf(
+			"%d. %s %s [%s] %s\n",
+			i+1,
+			todo.CreateTime.Format(time.DateOnly),
+			todo.UpdateTime.Format(time.DateOnly),
+			status,
+			todo.Content,
+		)
 	}
 }
 
-// MarkDone Mark todo item to complete by number
+// MarkDone Mark task item to complete by number
 func MarkDone(todos *[]Item, indexStr string) {
 	index, err := strconv.Atoi(indexStr)
 	if err != nil || index < 1 || index > len(*todos) {
@@ -51,11 +58,11 @@ func MarkDone(todos *[]Item, indexStr string) {
 	}
 
 	(*todos)[index-1].Done = true
-	(*todos)[index-1].UpdateTime = time.Now().Format(time.DateOnly)
+	(*todos)[index-1].UpdateTime = time.Now()
 	fmt.Println("✅ task is marked done")
 }
 
-// Delete delete todo item from todo list by number
+// Delete delete task from todos by number
 func Delete(todos *[]Item, indexStr string) {
 	index, err := strconv.Atoi(indexStr)
 	if err != nil || index < 1 || index > len(*todos) {

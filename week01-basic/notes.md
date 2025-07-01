@@ -24,8 +24,6 @@
 - todo_cli目录下的两个文件的package不同,编译会报错
   - **不同的package必须放在不同目录**
 
----
-
 ## Day 3 Log
 
 🎯 实现 done <编号> 命令 ✅  
@@ -63,3 +61,14 @@
     - 理解 `io.Reader` / `io.Writer` 接口
     - 熟练使用 `os.ReadFile` / `bufio.Scanner` / `io.Copy`
     - 实战练习建议（如日志分析器、文件合并器等）
+
+## Day 5 Log
+
+🎯 完善错误处理 + 添加基础测试 ✅  
+🧠 收获：
+- 将时间类型从 string 改为 time.Time，格式化输出更灵活
+- 实现对核心函数的测试（New, MarkDone, Delete）
+- 知道了如何测试标准输出：可以用 io.Writer 或临时接管 os.Stdout
+  
+❓ 疑问：
+- PrintAll() 改为可测试设计更通用
