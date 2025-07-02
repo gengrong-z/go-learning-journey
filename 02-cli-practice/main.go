@@ -4,7 +4,7 @@ import (
 	"bufio"
 	"encoding/json"
 	"fmt"
-	"go-learning-journey/week01-basic/todo_cli/todo"
+	"go-learning-journey/02-cli-practice/todo"
 	"log"
 	"os"
 	"strings"
