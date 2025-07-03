@@ -16,3 +16,12 @@ func PrintRoleDetail(c Character) {
 		fmt.Println("Unknown character type")
 	}
 }
+
+func SimulateTurn(characters []Character) {
+	for _, c := range characters {
+		fmt.Println("🎭 " + c.Name())
+		fmt.Println("🗡️  " + c.Attack())
+		fmt.Println("🛡️  " + c.Defend())
+		fmt.Println()
+	}
+}

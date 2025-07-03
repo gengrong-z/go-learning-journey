@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	rpg "go-learning-journey/03-interface-oop/rpg"
 )
 
@@ -11,11 +10,10 @@ func main() {
 		rpg.NewMage("Jaina"),
 	}
 
+	rpg.SimulateTurn(party)
+
 	for _, c := range party {
 		rpg.PrintStatus(c)
 		rpg.PrintRoleDetail(c)
-		fmt.Println(c.Attack())
-		fmt.Println(c.Defend())
-		fmt.Println()
 	}
 }
