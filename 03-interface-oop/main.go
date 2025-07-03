@@ -1,12 +1,21 @@
 package main
 
 import (
-	rpg2 "go-learning-journey/03-interface-oop/rpg"
+	"fmt"
+	rpg "go-learning-journey/03-interface-oop/rpg"
 )
 
 func main() {
-	w := rpg2.NewWarrior("Arthas")
-	rpg2.PrintStatus(w)
-	println(w.Attack())
-	println(w.Defend())
+	party := []rpg.Character{
+		rpg.NewWarrior("Arthas"),
+		rpg.NewMage("Jaina"),
+	}
+
+	for _, c := range party {
+		rpg.PrintStatus(c)
+		rpg.PrintRoleDetail(c)
+		fmt.Println(c.Attack())
+		fmt.Println(c.Defend())
+		fmt.Println()
+	}
 }
