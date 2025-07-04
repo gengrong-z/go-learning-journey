@@ -32,3 +32,7 @@ func (m *Mage) Status() string {
 	return m.Name() + " [Type: Mage] Mana:" +
 		strconv.Itoa(m.Mana) + " DEF:" + strconv.Itoa(m.Defense)
 }
+
+func (m *Mage) CastSpell() string {
+	return m.Name() + " casts Arcane Blast!"
+}

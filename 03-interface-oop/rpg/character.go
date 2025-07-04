@@ -8,6 +8,10 @@ type Defender interface {
 	Defend() string
 }
 
+type Caster interface {
+	CastSpell() string
+}
+
 // Character is all character's behavior interface
 type Character interface {
 	Name() string

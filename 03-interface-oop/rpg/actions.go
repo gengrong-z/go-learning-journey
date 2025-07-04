@@ -22,6 +22,11 @@ func SimulateTurn(characters []Character) {
 		fmt.Println("🎭 " + c.Name())
 		fmt.Println("🗡️  " + c.Attack())
 		fmt.Println("🛡️  " + c.Defend())
+
+		if caster, ok := c.(Caster); ok {
+			fmt.Println("✨", caster.CastSpell())
+		}
+
 		fmt.Println()
 	}
 }
