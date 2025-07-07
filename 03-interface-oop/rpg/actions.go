@@ -20,13 +20,22 @@ func PrintRoleDetail(c Character) {
 func SimulateTurn(characters []Character) {
 	for _, c := range characters {
 		fmt.Println("🎭 " + c.Name())
-		fmt.Println("🗡️  " + c.Attack())
-		fmt.Println("🛡️  " + c.Defend())
+		fmt.Println("🗡️ " + c.Attack())
+		fmt.Println("🛡️ " + c.Defend())
 
-		if caster, ok := c.(Caster); ok {
-			fmt.Println("✨", caster.CastSpell())
-		}
+		//if caster, ok := c.(Caster); ok {
+		//	fmt.Println("✨ ", caster.CastSpell())
+		//}
 
+		UseAbilities(c)
 		fmt.Println()
+	}
+}
+
+func UseAbilities(c Character) {
+	if caster, ok := c.(interface{ GetAbilities() []Ability }); ok {
+		for _, ability := range caster.GetAbilities() {
+			fmt.Println("✨", ability.Use(c))
+		}
 	}
 }

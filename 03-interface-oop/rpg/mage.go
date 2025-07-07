@@ -3,16 +3,18 @@ package rpg
 import "strconv"
 
 type Mage struct {
-	HeroName string
-	Mana     int
-	Defense  int
+	HeroName  string
+	Mana      int
+	Defense   int
+	Abilities []Ability
 }
 
 func NewMage(name string) *Mage {
 	return &Mage{
-		HeroName: name,
-		Mana:     0,
-		Defense:  0,
+		HeroName:  name,
+		Mana:      0,
+		Defense:   0,
+		Abilities: []Ability{&Fireball{}},
 	}
 }
 
@@ -35,4 +37,8 @@ func (m *Mage) Status() string {
 
 func (m *Mage) CastSpell() string {
 	return m.Name() + " casts Arcane Blast!"
+}
+
+func (m *Mage) GetAbilities() []Ability {
+	return m.Abilities
 }
