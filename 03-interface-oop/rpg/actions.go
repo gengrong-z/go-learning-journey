@@ -1,12 +1,15 @@
 package rpg
 
-import "fmt"
+import (
+	"fmt"
+	"go-learning-journey/03-interface-oop/core"
+)
 
-func PrintStatus(c Character) {
+func PrintStatus(c core.Character) {
 	fmt.Println(c.Status())
 }
 
-func PrintRoleDetail(c Character) {
+func PrintRoleDetail(c core.Character) {
 	switch v := c.(type) {
 	case *Warrior:
 		fmt.Println("💪 This is a brave Warrior with strength", v.Strength)
@@ -17,7 +20,7 @@ func PrintRoleDetail(c Character) {
 	}
 }
 
-func SimulateTurn(characters []Character) {
+func SimulateTurn(characters []core.Character) {
 	for _, c := range characters {
 		fmt.Println("🎭 " + c.Name())
 		fmt.Println("🗡️ " + c.Attack())
@@ -32,8 +35,8 @@ func SimulateTurn(characters []Character) {
 	}
 }
 
-func UseAbilities(c Character) {
-	if caster, ok := c.(interface{ GetAbilities() []Ability }); ok {
+func UseAbilities(c core.Character) {
+	if caster, ok := c.(interface{ GetAbilities() []core.Ability }); ok {
 		for _, ability := range caster.GetAbilities() {
 			fmt.Println("✨", ability.Use(c))
 		}

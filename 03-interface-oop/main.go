@@ -2,20 +2,23 @@ package main
 
 import (
 	"fmt"
-	rpg "go-learning-journey/03-interface-oop/rpg"
+	"go-learning-journey/03-interface-oop/core"
+	"go-learning-journey/03-interface-oop/rpg"
 )
 
 func main() {
-	party := []rpg.Character{
+	party := []core.Character{
 		rpg.NewWarrior("Arthas"),
 		rpg.NewMage("Jaina"),
+		rpg.NewRogue("Loki"),
 	}
 
+	fmt.Println("🎮 Battle Start!")
 	rpg.SimulateTurn(party)
 
-	for _, c := range party {
-		fmt.Println()
-		rpg.PrintStatus(c)
-		rpg.PrintRoleDetail(c)
-	}
+	//for _, c := range party {
+	//	fmt.Println()
+	//	rpg.PrintStatus(c)
+	//	rpg.PrintRoleDetail(c)
+	//}
 }

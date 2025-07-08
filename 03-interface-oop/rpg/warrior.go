@@ -8,14 +8,6 @@ type Warrior struct {
 	Defense  int
 }
 
-func NewWarrior(name string) *Warrior {
-	return &Warrior{
-		HeroName: name,
-		Strength: 0,
-		Defense:  0,
-	}
-}
-
 func (w *Warrior) Name() string {
 	return w.HeroName
 }

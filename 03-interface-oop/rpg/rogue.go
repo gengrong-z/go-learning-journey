@@ -1,21 +1,15 @@
 package rpg
 
-import "strconv"
+import (
+	"go-learning-journey/03-interface-oop/core"
+	"strconv"
+)
 
 type Rogue struct {
 	HeroName  string
 	Mana      int
 	Defense   int
-	Abilities []Ability
-}
-
-func NewRogue() *Rogue {
-	return &Rogue{
-		HeroName:  "Hero",
-		Mana:      100,
-		Defense:   100,
-		Abilities: []Ability{&Stealth{}},
-	}
+	Abilities []core.Ability
 }
 
 func (m *Rogue) Name() string {
@@ -39,6 +33,6 @@ func (m *Rogue) CastSpell() string {
 	return m.Name() + " casts Arcane Blast!"
 }
 
-func (m *Rogue) GetAbilities() []Ability {
+func (m *Rogue) GetAbilities() []core.Ability {
 	return m.Abilities
 }

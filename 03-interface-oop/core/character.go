@@ -1,4 +1,4 @@
-package rpg
+package core
 
 type Attacker interface {
 	Attack() string
