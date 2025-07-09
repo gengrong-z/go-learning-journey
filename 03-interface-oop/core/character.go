@@ -19,3 +19,8 @@ type Character interface {
 	Attacker
 	Defender
 }
+
+type Status struct {
+	HP int
+	MP int
+}

@@ -2,6 +2,7 @@ package rpg
 
 import (
 	"fmt"
+	"go-learning-journey/03-interface-oop/battlelog"
 	"go-learning-journey/03-interface-oop/core"
 )
 
@@ -20,7 +21,7 @@ func PrintRoleDetail(c core.Character) {
 	}
 }
 
-func SimulateTurn(characters []core.Character) {
+func SimulateTurn(characters []core.Character, round int, log *battlelog.BattleLog) {
 	for _, c := range characters {
 		fmt.Println("🎭 " + c.Name())
 		fmt.Println("🗡️ " + c.Attack())
@@ -31,8 +32,20 @@ func SimulateTurn(characters []core.Character) {
 		//}
 
 		UseAbilities(c)
+
+		fmt.Println("🗡️ " + c.Attack())
+		log.Add(battlelog.LogEntry{
+			Round:  round,
+			Actor:  c.Name(),
+			Action: c.Attack(),
+			Target: "Monster",
+			Effect: "normal attack",
+		})
+
 		fmt.Println()
 	}
+
+	log.Print()
 }
 
 func UseAbilities(c core.Character) {

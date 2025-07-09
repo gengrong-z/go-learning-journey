@@ -9,6 +9,7 @@ type Mage struct {
 	HeroName  string
 	Mana      int
 	Defense   int
+	State     core.Status
 	Abilities []core.Ability
 }
 

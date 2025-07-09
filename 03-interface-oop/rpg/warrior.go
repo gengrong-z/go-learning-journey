@@ -1,11 +1,15 @@
 package rpg
 
-import "strconv"
+import (
+	"go-learning-journey/03-interface-oop/core"
+	"strconv"
+)
 
 type Warrior struct {
 	HeroName string
 	Strength int
 	Defense  int
+	State    core.Status
 }
 
 func (w *Warrior) Name() string {

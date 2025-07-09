@@ -9,6 +9,7 @@ type Rogue struct {
 	HeroName  string
 	Mana      int
 	Defense   int
+	State     core.Status
 	Abilities []core.Ability
 }
 
