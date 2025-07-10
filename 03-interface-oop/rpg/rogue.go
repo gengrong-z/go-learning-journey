@@ -1,8 +1,8 @@
 package rpg
 
 import (
+	"fmt"
 	"go-learning-journey/03-interface-oop/core"
-	"strconv"
 )
 
 type Rogue struct {
@@ -13,27 +13,39 @@ type Rogue struct {
 	Abilities []core.Ability
 }
 
-func (m *Rogue) Name() string {
-	return m.HeroName
+func (r *Rogue) Name() string {
+	return r.HeroName
 }
 
-func (m *Rogue) Attack() string {
-	return m.Name() + " stabs swiftly!"
+func (r *Rogue) Attack() string {
+	return r.Name() + " stabs swiftly!"
 }
 
-func (m *Rogue) Defend() string {
-	return m.Name() + " conjures a magic barrier!"
+func (r *Rogue) Defend() string {
+	return r.Name() + " conjures a magic barrier!"
 }
 
-func (m *Rogue) Status() string {
-	return m.Name() + " [Type: Rogue] Mana:" +
-		strconv.Itoa(m.Mana) + " DEF:" + strconv.Itoa(m.Defense)
+//func (m *Rogue) Status() string {
+//	return m.Name() + " [Type: Rogue] Mana:" +
+//		strconv.Itoa(m.Mana) + " DEF:" + strconv.Itoa(m.Defense)
+//}
+
+func (r *Rogue) CastSpell() string {
+	return r.Name() + " casts Arcane Blast!"
 }
 
-func (m *Rogue) CastSpell() string {
-	return m.Name() + " casts Arcane Blast!"
+func (r *Rogue) GetAbilities() []core.Ability {
+	return r.Abilities
 }
 
-func (m *Rogue) GetAbilities() []core.Ability {
-	return m.Abilities
+func (r *Rogue) TakeDamage(dmg int) string {
+	return r.State.TakeDamage(dmg)
+}
+
+func (r *Rogue) GetStatus() *core.Status {
+	return &r.State
+}
+
+func (r *Rogue) Status() string {
+	return fmt.Sprintf("%s (HP: %d)", r.HeroName, r.State.HP)
 }

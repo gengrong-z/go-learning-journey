@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"go-learning-journey/03-interface-oop/battlelog"
 	"go-learning-journey/03-interface-oop/core"
+	"math/rand"
 )
 
 func PrintStatus(c core.Character) {
@@ -21,7 +22,7 @@ func PrintRoleDetail(c core.Character) {
 	}
 }
 
-func SimulateTurn(characters []core.Character, round int, log *battlelog.BattleLog) {
+func SimulateTurn_old(characters []core.Character, round int, log *battlelog.BattleLog) {
 	for _, c := range characters {
 		fmt.Println("🎭 " + c.Name())
 		fmt.Println("🗡️ " + c.Attack())
@@ -43,6 +44,45 @@ func SimulateTurn(characters []core.Character, round int, log *battlelog.BattleL
 		})
 
 		fmt.Println()
+	}
+
+	log.Print()
+}
+
+func selectTarget(c core.Character, party []core.Character) core.Character {
+	for _, character := range party {
+		if c.Name() == character.Name() {
+			return character
+		}
+	}
+	return nil
+}
+
+func selectTargetRandom(party []core.Character) core.Character {
+	return party[rand.Intn(len(party))]
+}
+
+func SimulateTurn(characters []core.Character, round int, log *battlelog.BattleLog) {
+	for _, c := range characters {
+		if !c.GetStatus().IsAlive() {
+			continue
+		}
+
+		//target := selectTarget(c, characters)
+		target := selectTargetRandom(characters)
+		if target == nil {
+			continue
+		}
+
+		fmt.Println("🗡️ " + c.Attack())
+		effect := target.TakeDamage(10)
+		log.Add(battlelog.LogEntry{
+			Round:  round,
+			Actor:  c.Name(),
+			Action: c.Attack(),
+			Target: target.Name(),
+			Effect: effect,
+		})
 	}
 
 	log.Print()

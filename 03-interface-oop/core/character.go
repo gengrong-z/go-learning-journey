@@ -16,11 +16,8 @@ type Caster interface {
 type Character interface {
 	Name() string
 	Status() string
+	GetStatus() *Status
+	TakeDamage(int) string
 	Attacker
 	Defender
-}
-
-type Status struct {
-	HP int
-	MP int
 }

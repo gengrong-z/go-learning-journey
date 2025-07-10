@@ -1,8 +1,8 @@
 package rpg
 
 import (
+	"fmt"
 	"go-learning-journey/03-interface-oop/core"
-	"strconv"
 )
 
 type Warrior struct {
@@ -24,7 +24,19 @@ func (w *Warrior) Defend() string {
 	return w.Name() + " raises a shield to block!"
 }
 
+//func (w *Warrior) Status() string {
+//	return w.Name() + " [Type: Warrior] STR:" +
+//		strconv.Itoa(w.Strength) + " DEF:" + strconv.Itoa(w.Defense)
+//}
+
 func (w *Warrior) Status() string {
-	return w.Name() + " [Type: Warrior] STR:" +
-		strconv.Itoa(w.Strength) + " DEF:" + strconv.Itoa(w.Defense)
+	return fmt.Sprintf("%s (HP: %d)", w.HeroName, w.State.HP)
+}
+
+func (w *Warrior) TakeDamage(dmg int) string {
+	return w.State.TakeDamage(dmg)
+}
+
+func (w *Warrior) GetStatus() *core.Status {
+	return &w.State
 }
