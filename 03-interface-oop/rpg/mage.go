@@ -13,6 +13,10 @@ type Mage struct {
 	Abilities []core.Ability
 }
 
+func (m *Mage) AttackerPower() int {
+	return m.Mana
+}
+
 func (m *Mage) GetStatus() *core.Status {
 	return &m.State
 }

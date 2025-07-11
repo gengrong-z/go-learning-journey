@@ -12,6 +12,10 @@ type Warrior struct {
 	State    core.Status
 }
 
+func (w *Warrior) AttackerPower() int {
+	return w.Strength
+}
+
 func (w *Warrior) Name() string {
 	return w.HeroName
 }

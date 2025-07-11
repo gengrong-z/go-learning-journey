@@ -13,6 +13,10 @@ type Rogue struct {
 	Abilities []core.Ability
 }
 
+func (r *Rogue) AttackerPower() int {
+	return 10
+}
+
 func (r *Rogue) Name() string {
 	return r.HeroName
 }

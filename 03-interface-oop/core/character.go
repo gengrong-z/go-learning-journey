@@ -18,6 +18,7 @@ type Character interface {
 	Status() string
 	GetStatus() *Status
 	TakeDamage(int) string
+	AttackerPower() int
 	Attacker
 	Defender
 }

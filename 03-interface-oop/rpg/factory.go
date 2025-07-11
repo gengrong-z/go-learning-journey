@@ -32,7 +32,7 @@ func NewRogue(name string) *Rogue {
 func NewWarrior(name string) *Warrior {
 	return &Warrior{
 		HeroName: name,
-		Strength: 0,
+		Strength: 110,
 		Defense:  0,
 		State:    *NewState(),
 		// Warrior has no special abilities

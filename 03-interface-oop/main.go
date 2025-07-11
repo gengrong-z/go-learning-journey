@@ -16,9 +16,13 @@ func main() {
 
 	fmt.Println("🎮 Battle Start!")
 
+	round := 1
 	log := battlelog.NewBattleLog()
 
-	round := 1
+	fmt.Println("SimulateAbilities Start")
+	rpg.SimulateAbilities(party, round, log)
+
+	fmt.Println("\nSimulateTurn Start")
 	rpg.SimulateTurn(party, round, log)
 
 	//for _, c := range party {

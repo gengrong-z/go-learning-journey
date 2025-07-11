@@ -22,7 +22,7 @@ func PrintRoleDetail(c core.Character) {
 	}
 }
 
-func SimulateTurn_old(characters []core.Character, round int, log *battlelog.BattleLog) {
+func SimulateAbilities(characters []core.Character, round int, log *battlelog.BattleLog) {
 	for _, c := range characters {
 		fmt.Println("🎭 " + c.Name())
 		fmt.Println("🗡️ " + c.Attack())
@@ -32,7 +32,7 @@ func SimulateTurn_old(characters []core.Character, round int, log *battlelog.Bat
 		//	fmt.Println("✨ ", caster.CastSpell())
 		//}
 
-		UseAbilities(c)
+		UseAbilities(log, c, round)
 
 		fmt.Println("🗡️ " + c.Attack())
 		log.Add(battlelog.LogEntry{
@@ -75,7 +75,7 @@ func SimulateTurn(characters []core.Character, round int, log *battlelog.BattleL
 		}
 
 		fmt.Println("🗡️ " + c.Attack())
-		effect := target.TakeDamage(10)
+		effect := target.TakeDamage(c.AttackerPower())
 		log.Add(battlelog.LogEntry{
 			Round:  round,
 			Actor:  c.Name(),
@@ -86,11 +86,26 @@ func SimulateTurn(characters []core.Character, round int, log *battlelog.BattleL
 	}
 
 	log.Print()
+
+	for _, c := range characters {
+		if !c.GetStatus().IsAlive() {
+			fmt.Printf("%s is dead\n", c.Name())
+			continue
+		}
+		fmt.Printf("%s ---- HP:%d\n", c.Name(), c.GetStatus().HP)
+	}
 }
 
-func UseAbilities(c core.Character) {
+func UseAbilities(log *battlelog.BattleLog, c core.Character, round int) {
 	if caster, ok := c.(interface{ GetAbilities() []core.Ability }); ok {
 		for _, ability := range caster.GetAbilities() {
+			log.Add(battlelog.LogEntry{
+				Round:  round,
+				Actor:  c.Name(),
+				Action: ability.Name(),
+				Target: c.Name(),
+				Effect: ability.Use(c),
+			})
 			fmt.Println("✨", ability.Use(c))
 		}
 	}
