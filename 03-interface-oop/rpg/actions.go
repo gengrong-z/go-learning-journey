@@ -62,6 +62,30 @@ func selectTargetRandom(party []core.Character) core.Character {
 	return party[rand.Intn(len(party))]
 }
 
+func StartBattle(characters []core.Character, log *battlelog.BattleLog) {
+	for round := 1; ; round++ {
+		SimulateTurn(characters, round, log)
+
+		alive := len(characters)
+		for _, c := range characters {
+			if !c.GetStatus().IsAlive() {
+				alive--
+			}
+		}
+		if alive == 1 {
+			fmt.Println("Battle End")
+			for _, c := range characters {
+				if c.GetStatus().IsAlive() {
+					fmt.Printf(" 🏆 Winner is %s ", c.Name())
+				}
+			}
+			break
+		} else if alive == 0 {
+			fmt.Println(" 🤝Not Winner")
+		}
+	}
+}
+
 func SimulateTurn(characters []core.Character, round int, log *battlelog.BattleLog) {
 	for _, c := range characters {
 		if !c.GetStatus().IsAlive() {
@@ -74,8 +98,13 @@ func SimulateTurn(characters []core.Character, round int, log *battlelog.BattleL
 			continue
 		}
 
-		fmt.Println("🗡️ " + c.Attack())
+		//fmt.Println("🗡️ " + c.Attack())
 		effect := target.TakeDamage(c.AttackerPower())
+		//if !target.GetStatus().IsAlive() {
+		//	fmt.Printf("  %s is dead\n", c.Name())
+		//} else {
+		//	fmt.Printf("  %s ---- HP:%d\n", c.Name(), c.GetStatus().HP)
+		//}
 		log.Add(battlelog.LogEntry{
 			Round:  round,
 			Actor:  c.Name(),
@@ -86,14 +115,6 @@ func SimulateTurn(characters []core.Character, round int, log *battlelog.BattleL
 	}
 
 	log.Print()
-
-	for _, c := range characters {
-		if !c.GetStatus().IsAlive() {
-			fmt.Printf("%s is dead\n", c.Name())
-			continue
-		}
-		fmt.Printf("%s ---- HP:%d\n", c.Name(), c.GetStatus().HP)
-	}
 }
 
 func UseAbilities(log *battlelog.BattleLog, c core.Character, round int) {
