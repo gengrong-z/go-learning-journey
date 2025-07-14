@@ -7,48 +7,6 @@ import (
 	"math/rand"
 )
 
-func PrintStatus(c core.Character) {
-	fmt.Println(c.Status())
-}
-
-func PrintRoleDetail(c core.Character) {
-	switch v := c.(type) {
-	case *Warrior:
-		fmt.Println("💪 This is a brave Warrior with strength", v.Strength)
-	case *Mage:
-		fmt.Println("🧙 This is a wise Mage with mana", v.Mana)
-	default:
-		fmt.Println("Unknown character type")
-	}
-}
-
-func SimulateAbilities(characters []core.Character, round int, log *battlelog.BattleLog) {
-	for _, c := range characters {
-		fmt.Println("🎭 " + c.Name())
-		fmt.Println("🗡️ " + c.Attack())
-		fmt.Println("🛡️ " + c.Defend())
-
-		//if caster, ok := c.(Caster); ok {
-		//	fmt.Println("✨ ", caster.CastSpell())
-		//}
-
-		UseAbilities(log, c, round)
-
-		fmt.Println("🗡️ " + c.Attack())
-		log.Add(battlelog.LogEntry{
-			Round:  round,
-			Actor:  c.Name(),
-			Action: c.Attack(),
-			Target: "Monster",
-			Effect: "normal attack",
-		})
-
-		fmt.Println()
-	}
-
-	log.Print()
-}
-
 func selectTarget(c core.Character, party []core.Character) core.Character {
 	for _, character := range party {
 		if c.Name() == character.Name() {
@@ -98,13 +56,10 @@ func SimulateTurn(characters []core.Character, round int, log *battlelog.BattleL
 			continue
 		}
 
-		//fmt.Println("🗡️ " + c.Attack())
+		UseAbilities(log, c, round)
+
 		effect := target.TakeDamage(c.AttackerPower())
-		//if !target.GetStatus().IsAlive() {
-		//	fmt.Printf("  %s is dead\n", c.Name())
-		//} else {
-		//	fmt.Printf("  %s ---- HP:%d\n", c.Name(), c.GetStatus().HP)
-		//}
+
 		log.Add(battlelog.LogEntry{
 			Round:  round,
 			Actor:  c.Name(),
@@ -120,6 +75,9 @@ func SimulateTurn(characters []core.Character, round int, log *battlelog.BattleL
 func UseAbilities(log *battlelog.BattleLog, c core.Character, round int) {
 	if caster, ok := c.(interface{ GetAbilities() []core.Ability }); ok {
 		for _, ability := range caster.GetAbilities() {
+			if ability.IsNotAvailable(c) {
+				continue
+			}
 			log.Add(battlelog.LogEntry{
 				Round:  round,
 				Actor:  c.Name(),
@@ -127,7 +85,6 @@ func UseAbilities(log *battlelog.BattleLog, c core.Character, round int) {
 				Target: c.Name(),
 				Effect: ability.Use(c),
 			})
-			fmt.Println("✨", ability.Use(c))
 		}
 	}
 }
