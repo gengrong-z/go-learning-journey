@@ -4,75 +4,39 @@ import (
 	"fmt"
 	"go-learning-journey/03-interface-oop/battlelog"
 	"go-learning-journey/03-interface-oop/core"
-	"math/rand"
 )
 
-func selectTarget(c core.Character, party []core.Character) core.Character {
-	for _, character := range party {
-		if c.Name() == character.Name() {
-			return character
-		}
-	}
-	return nil
-}
-
-func selectTargetRandom(party []core.Character) core.Character {
-	return party[rand.Intn(len(party))]
-}
-
 func StartBattle(characters []core.Character, log *battlelog.BattleLog) {
+	player1 := characters[0]
+	player2 := characters[1]
 	for round := 1; ; round++ {
-		SimulateTurn(characters, round, log)
-
-		alive := len(characters)
-		for _, c := range characters {
-			if !c.GetStatus().IsAlive() {
-				alive--
-			}
+		if round/2 == 0 {
+			SimulateTurn(player1, player2, round, log)
+		} else {
+			SimulateTurn(player2, player1, round, log)
 		}
-		if alive == 1 {
+
+		if !player1.GetStatus().IsAlive() {
 			fmt.Println("Battle End")
-			for _, c := range characters {
-				if c.GetStatus().IsAlive() {
-					fmt.Printf(" 🏆 Winner is %s ", c.Name())
-				}
-			}
+			log.Print()
+			fmt.Printf(" 🏆 Winner is %s ", player2.Name())
 			break
-		} else if alive == 0 {
-			fmt.Println(" 🤝Not Winner")
+		} else if !player2.GetStatus().IsAlive() {
+			fmt.Println("Battle End")
+			log.Print()
+			fmt.Printf(" 🏆 Winner is %s ", player1.Name())
+			break
 		}
 	}
 }
 
-func SimulateTurn(characters []core.Character, round int, log *battlelog.BattleLog) {
-	for _, c := range characters {
-		if !c.GetStatus().IsAlive() {
-			continue
-		}
+func SimulateTurn(player, target core.Character, round int, log *battlelog.BattleLog) {
 
-		//target := selectTarget(c, characters)
-		target := selectTargetRandom(characters)
-		if target == nil {
-			continue
-		}
+	UseAbilities(log, player, target, round)
 
-		UseAbilities(log, c, round)
-
-		effect := target.TakeDamage(c.AttackerPower())
-
-		log.Add(battlelog.LogEntry{
-			Round:  round,
-			Actor:  c.Name(),
-			Action: c.Attack(),
-			Target: target.Name(),
-			Effect: effect,
-		})
-	}
-
-	log.Print()
 }
 
-func UseAbilities(log *battlelog.BattleLog, c core.Character, round int) {
+func UseAbilities(log *battlelog.BattleLog, c core.Character, target core.Character, round int) {
 	if caster, ok := c.(interface{ GetAbilities() []core.Ability }); ok {
 		for _, ability := range caster.GetAbilities() {
 			if ability.IsNotAvailable(c) {
@@ -82,9 +46,19 @@ func UseAbilities(log *battlelog.BattleLog, c core.Character, round int) {
 				Round:  round,
 				Actor:  c.Name(),
 				Action: ability.Name(),
-				Target: c.Name(),
-				Effect: ability.Use(c),
+				Target: target.Name(),
+				Effect: ability.Use(c, target),
 			})
+			return
 		}
 	}
+
+	effect := target.TakeDamage(c.AttackerPower())
+	log.Add(battlelog.LogEntry{
+		Round:  round,
+		Actor:  c.Name(),
+		Action: c.Attack(),
+		Target: target.Name(),
+		Effect: effect,
+	})
 }

@@ -2,8 +2,9 @@ package core
 
 type Ability interface {
 	Name() string
-	MP() int
-	Use(user Character) string
+	Cost() int
+	Use(user Character, target Character) string
 	IsNotAvailable(user Character) bool
+	Damage() int
 	//isAvailable(user Character) bool
 }

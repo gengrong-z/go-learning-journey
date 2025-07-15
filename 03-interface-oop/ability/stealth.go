@@ -7,21 +7,27 @@ import (
 
 type Stealth struct{}
 
+func (s *Stealth) Damage() int {
+	return 10
+}
+
 func (s *Stealth) Name() string {
 	return "Stealth"
 }
 
-func (s *Stealth) Use(user core.Character) string {
-	return user.Name() + " vanishes into the shadows!"
+func (s *Stealth) Use(user core.Character, target core.Character) string {
+	user.GetStatus().MP -= s.Cost()
+	effect := target.TakeDamage(s.Damage())
+	return user.Name() + " vanishes into the shadows!\n" + effect
 }
 
-func (s *Stealth) MP() int {
+func (s *Stealth) Cost() int {
 	return 100
 }
 
 func (s *Stealth) IsNotAvailable(user core.Character) bool {
-	if user.GetStatus().MP < s.MP() {
-		fmt.Printf("%s MP is not enough!", user.Name())
+	if user.GetStatus().MP < s.Cost() {
+		fmt.Printf("%s Cost is not enough!", user.Name())
 		return true
 	}
 	return false

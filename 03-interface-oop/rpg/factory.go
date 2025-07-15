@@ -12,7 +12,7 @@ func NewState() *core.Status {
 func NewMage(name string) *Mage {
 	return &Mage{
 		HeroName:  name,
-		Mana:      0,
+		Mana:      100,
 		Defense:   0,
 		State:     *NewState(),
 		Abilities: []core.Ability{&ability.Fireball{}},
@@ -22,8 +22,8 @@ func NewMage(name string) *Mage {
 func NewRogue(name string) *Rogue {
 	return &Rogue{
 		HeroName:  name,
-		Mana:      100,
-		Defense:   100,
+		Mana:      20,
+		Defense:   10,
 		State:     *NewState(),
 		Abilities: []core.Ability{&ability.Stealth{}},
 	}
@@ -32,8 +32,8 @@ func NewRogue(name string) *Rogue {
 func NewWarrior(name string) *Warrior {
 	return &Warrior{
 		HeroName: name,
-		Strength: 110,
-		Defense:  0,
+		Strength: 10,
+		Defense:  20,
 		State:    *NewState(),
 		// Warrior has no special abilities
 	}

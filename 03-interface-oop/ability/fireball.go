@@ -7,21 +7,27 @@ import (
 
 type Fireball struct{}
 
+func (f *Fireball) Damage() int {
+	return 30
+}
+
 func (f *Fireball) Name() string {
 	return "Fireball"
 }
 
-func (f *Fireball) Use(user core.Character) string {
-	return user.Name() + " hurls a blazing fireball!"
+func (f *Fireball) Use(user core.Character, target core.Character) string {
+	user.GetStatus().MP -= f.Cost()
+	effect := target.TakeDamage(f.Damage())
+	return user.Name() + " hurls a blazing fireball!\n" + effect
 }
 
-func (f *Fireball) MP() int {
+func (f *Fireball) Cost() int {
 	return 100
 }
 
 func (f *Fireball) IsNotAvailable(user core.Character) bool {
-	if user.GetStatus().MP < f.MP() {
-		fmt.Printf("%s MP is not enough!", user.Name())
+	if user.GetStatus().MP < f.Cost() {
+		fmt.Printf("%s Cost is not enough!", user.Name())
 		return true
 	}
 	return false

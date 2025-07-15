@@ -28,11 +28,6 @@ func (w *Warrior) Defend() string {
 	return w.Name() + " raises a shield to block!"
 }
 
-//func (w *Warrior) Status() string {
-//	return w.Name() + " [Type: Warrior] STR:" +
-//		strconv.Itoa(w.Strength) + " DEF:" + strconv.Itoa(w.Defense)
-//}
-
 func (w *Warrior) Status() string {
 	return fmt.Sprintf("%s (HP: %d)", w.HeroName, w.State.HP)
 }
